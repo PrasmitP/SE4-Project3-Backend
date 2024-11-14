@@ -24,6 +24,7 @@ db.project = require("./project.model.js")(sequelize, Sequelize);
 
 
 
+
 // foreign key for session
 db.user.hasMany(
   db.session,
