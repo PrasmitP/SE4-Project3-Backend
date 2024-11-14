@@ -17,14 +17,28 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    // refresh_token: {
-    //   type: Sequelize.STRING(512),
-    //   allowNull: true
-    // },
-    // expiration_date: {
-    //   type: Sequelize.DATE,
-    //   allowNull: true
-    // },
+    contactEmail: {
+      type: Sequelize.STRING,
+    },
+    phoneNumber: {
+      type: Sequelize.STRING,
+    },
+    linkedInUrl: {
+      type: Sequelize.STRING,
+    },
+    websiteUrl: {
+      type: Sequelize.STRING,
+    },
+    city: {
+      type: Sequelize.STRING,
+    },
+    state: {
+      type: Sequelize.STRING,
+    },
+    isAdmin: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   });
 
   return User;
