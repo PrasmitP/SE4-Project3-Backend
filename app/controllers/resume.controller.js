@@ -14,6 +14,7 @@ exports.create = (req, res) => {
   const resume = {
     title: req.body.title,
     template: req.body.template,
+    summary: req.body.summary,
     createdAt: req.body.createdAt,
     updatedAt: req.body.updatedAt,
     userId: req.body.userId,
