@@ -22,8 +22,6 @@ db.experience = require("./experience.model.js")(sequelize, Sequelize);
 db.education = require("./education.model.js")(sequelize, Sequelize);
 db.project = require("./project.model.js")(sequelize, Sequelize);
 
-
-
 // foreign key for session
 db.user.hasMany(
   db.session,
@@ -96,4 +94,21 @@ db.project.belongsTo(
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
+// Each Resume has multiple Educations
+// Each Education can be in multiple Resumes
+// Many to Many relationship
+db.education.belongsToMany(db.resume, { through: "ResumeEducation" });
+db.resume.belongsToMany(db.education, { through: "ResumeEducation" });
+
+
+// Same thing for the other models:
+
+db.experience.belongsToMany(db.resume, { through: "ResumeExperience" });
+db.resume.belongsToMany(db.experience, { through: "ResumeExperience" });
+
+db.skill.belongsToMany(db.resume, { through: "ResumeSkill" });
+db.resume.belongsToMany(db.skill, { through: "ResumeSkill" });
+
+db.project.belongsToMany(db.resume, { through: "ResumeProject" });
+db.resume.belongsToMany(db.project, { through: "ResumeProject" });
 module.exports = db;

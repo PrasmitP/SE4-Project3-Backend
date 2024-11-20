@@ -18,6 +18,9 @@ module.exports = (app) => {
     // Update an Education with id
     router.put("/:id", [authenticate], educations.update);
 
+    // Update relation for Education
+    router.put("/updateRelation/:id", [authenticate], educations.updateRelation);
+
     // Delete an Education with id
     router.delete("/:id", [authenticate], educations.delete);
 

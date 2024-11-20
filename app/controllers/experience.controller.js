@@ -2,7 +2,7 @@ const db = require("../models");
 const Experience = db.experience;
 const Op = db.Sequelize.Op;
 // Create and Save a new Experience
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Validate request
   if (!req.body.companyName) {
     res.status(400).send({
@@ -20,18 +20,24 @@ exports.create = (req, res) => {
     jobRole: req.body.jobRole,
     userId: req.body.userId,
   };
-  // Save Experience in the database
-  Experience.create(experience)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Resume.",
-      });
+
+  const resumeId = req.body.resumeId;
+
+  console.log("Creating Experience with companyName: " + experience.companyName);
+  // Trying to save Experience in the database
+  try {
+    let experienceInstance = await Experience.create(experience);
+    await experienceInstance.addResume(resumeId);
+    res.send(experienceInstance);
+  }
+  catch (err) {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while creating the Experience.",
     });
+  }
 };
+
 // Retrieve all Experiences from the database.
 exports.findAll = (req, res) => {
   const institutionName = req.query.institutionName;
@@ -48,7 +54,7 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single Experience with an id
+// Find all Experience for user id 
 exports.findAllForUser = (req, res) => {
   console.log("Finding all experience for user with id: " + req.params.userId);
   const userId = req.params.userId;
@@ -70,7 +76,8 @@ exports.findAllForUser = (req, res) => {
       });
     });
 };
-// Find a single Resume with an id
+
+// Find a single Experience with an id
 exports.findOne = (req, res) => {
   console.log("Finding experience with id: " + req.params.id);
 
@@ -91,10 +98,12 @@ exports.findOne = (req, res) => {
       });
     });
 };
-// Update a Resume by the id in the request
+
+// Update an Experience by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
   console.log("Updating experience with id: " + id);
+
   Experience.update(req.body, {
     where: { experienceId: id },
   })
@@ -115,6 +124,54 @@ exports.update = (req, res) => {
       });
     });
 };
+
+exports.updateRelation = async (req, res) => {
+  const id = req.params.id;
+  console.log("Updating relationship of experience with id: " + id);
+
+  try {
+    // Find the Experience instance by primary key
+    const experienceInstance = await Experience.findByPk(id);
+
+    if (!experienceInstance) {
+      res.status(404).send({
+        message: `Experience with id=${id} not found.`,
+      });
+      return;
+    }
+
+    // Handle removeResumeId
+    if (req.body.removeResumeId) {
+      await experienceInstance.removeResume(req.body.removeResumeId);
+      res.send({
+        message: `Successfully removed Resume with id=${req.body.removeResumeId} from Experience with id=${id}.`,
+      });
+      return;
+    }
+
+    // Handle addResumeId
+    if (req.body.addResumeId) {
+      await experienceInstance.addResume(req.body.addResumeId);
+      res.send({
+        message: `Successfully added Resume with id=${req.body.addResumeId} to Experience with id=${id}.`,
+      });
+      return;
+    }
+
+    // If neither addResumeId nor removeResumeId is provided
+    res.status(400).send({
+      message: "Invalid request body! Need addResumeId or removeResumeId.",
+    });
+
+  } catch (err) {
+    // Handle errors
+    res.status(500).send({
+      message:
+        err.message || `Some error occurred while updating the relationship for Experience with id=${id}.`,
+    });
+  }
+};
+
 // Delete a Resume with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
