@@ -14,6 +14,7 @@ exports.create = (req, res) => {
   const resume = {
     title: req.body.title,
     template: req.body.template,
+    summary: req.body.summary,
     createdAt: req.body.createdAt,
     updatedAt: req.body.updatedAt,
     userId: req.body.userId,
@@ -116,7 +117,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
   Resume.destroy({
-    where: { id: id },
+    where: { resumeId: id },
   })
     .then((num) => {
       if (num == 1) {

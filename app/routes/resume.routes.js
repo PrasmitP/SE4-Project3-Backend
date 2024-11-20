@@ -13,7 +13,7 @@ module.exports = (app) => {
   router.get("/userResumes/:userId", [authenticate], resumes.findAllForUser);
 
   // Retrieve a single Resume with id
-  router.get("/resume=:id", [authenticate], resumes.findOne);
+  router.get("/:id", [authenticate], resumes.findOne);
 
   // Update a Resume with id
   router.put("/:id", [authenticate], resumes.update);
