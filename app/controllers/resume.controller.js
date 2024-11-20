@@ -117,7 +117,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
   Resume.destroy({
-    where: { id: id },
+    where: { resumeId: id },
   })
     .then((num) => {
       if (num == 1) {
