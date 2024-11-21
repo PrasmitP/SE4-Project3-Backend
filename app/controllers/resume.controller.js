@@ -113,6 +113,79 @@ exports.update = (req, res) => {
       });
     });
 };
+
+// Get all educations for a resume
+exports.getEducations = (req, res) => {
+  console.log("Finding all educations for resume with id: " + req.params.id);
+  const id = req.params.id;
+  Resume.findByPk(id, { include: ["education"] })
+    .then((data) => {
+      if (data) {
+        res.send(data.education);
+      } else {
+        res.status(404).send({
+          message: `Cannot find Educations for Resume with id=${id}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Error retrieving Educations for Resume with id=" + id,
+      });
+    });
+}
+
+// Get all experiences for a resume
+exports.getExperiences = (req, res) => {
+  console.log("Finding all educations for resume with id: " + req.params.id);
+  const id = req.params.id;
+  Resume.findByPk(id, { include: ["experiences"] })
+    .then((data) => {
+      if (data) {
+        res.send(data.experiences);
+      } else {
+        res.status(404).send({
+          message: `Cannot find Experiences for Resume with id=${id}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Error retrieving Experiences for Resume with id=" + id,
+      });
+    });
+}
+
+// Get all skills for a resume
+exports.getSkills = (req, res) => {
+  console.log("Finding all skills for resume with id: " + req.params.id);
+  const id = req.params.id;
+  Resume.findByPk(id, { include: ["skills"] })
+    .then((data) => {
+      if (data) {
+        res.send(data.skills);
+      } else {
+        res.status(404).send({
+          message: `Cannot find Educations for Resume with id=${id}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Error retrieving Educations for Resume with id=" + id,
+      });
+    });
+}
+
+
+
+
 // Delete a Resume with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
