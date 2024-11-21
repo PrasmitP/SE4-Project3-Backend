@@ -13,10 +13,19 @@ module.exports = (app) => {
   router.get("/userResumes/:userId", [authenticate], resumes.findAllForUser);
 
   // Retrieve a single Resume with id
-  router.get("/resume=:id", [authenticate], resumes.findOne);
+  router.get("/:id", [authenticate], resumes.findOne);
 
   // Update a Resume with id
   router.put("/:id", [authenticate], resumes.update);
+
+  // Get all educations for a resume
+  router.get("/:id/educations", [authenticate], resumes.getEducations);
+
+  // Get all experiences for a resume
+  router.get("/:id/experiences", [authenticate], resumes.getExperiences);
+
+  // Get all skills for a resume
+  router.get("/:id/skills", [authenticate], resumes.getSkills);
 
   // Delete a Resume with id
   router.delete("/:id", [authenticate], resumes.delete);
