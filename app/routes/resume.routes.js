@@ -20,7 +20,9 @@ module.exports = (app) => {
 
   // Get all educations for a resume
   router.get("/:id/educations", [authenticate], resumes.getEducations);
-
+  // Add multiple educations to a resume
+  router.post("/:id/educations", [authenticate], resumes.addEducations);
+  
   // Get all experiences for a resume
   router.get("/:id/experiences", [authenticate], resumes.getExperiences);
 
