@@ -186,7 +186,7 @@ exports.getSkills = (req, res) => {
         res.send(data.skills);
       } else {
         res.status(404).send({
-          message: `Cannot find Educations for Resume with id=${id}.`,
+          message: `Cannot find Skills for Resume with id=${id}.`,
         });
       }
     })
@@ -194,13 +194,33 @@ exports.getSkills = (req, res) => {
       res.status(500).send({
         message:
           err.message ||
-          "Error retrieving Educations for Resume with id=" + id,
+          "Error retrieving Skills for Resume with id=" + id,
       });
     });
 }
 
-
-
+// Get all awards for a resume
+exports.getAwards = (req, res) => {
+  console.log("Finding all awards for resume with id: " + req.params.id);
+  const id = req.params.id;
+  Resume.findByPk(id, { include: ["awards"] })
+    .then((data) => {
+      if (data) {
+        res.send(data.awards);
+      } else {
+        res.status(404).send({
+          message: `Cannot find Awards for Resume with id=${id}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Error retrieving Awards for Resume with id=" + id,
+      });
+    });
+}
 
 // Delete a Resume with the specified id in the request
 exports.delete = (req, res) => {
