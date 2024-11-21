@@ -4,6 +4,8 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new User
 exports.create = (req, res) => {
+  console.log("trying to create user")
+  console.log(req.body)
   // Validate request
   if (!req.body.fName) {
     res.status(400).send({

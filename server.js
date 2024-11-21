@@ -33,6 +33,7 @@ require("./app/routes/resume.routes")(app);
 require("./app/routes/education.routes")(app);
 require("./app/routes/experience.routes")(app);
 require("./app/routes/skill.routes")(app);
+require("./app/routes/project.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3100;

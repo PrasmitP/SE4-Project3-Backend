@@ -1,5 +1,5 @@
 {
-  "name": "tutorial-backend",
+  "name": "resume-builder",
   "version": "1.0.0",
   "description": "Tutorial Node.js with Rest API",
   "main": "server.js",

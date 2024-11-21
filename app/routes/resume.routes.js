@@ -18,6 +18,17 @@ module.exports = (app) => {
   // Update a Resume with id
   router.put("/:id", [authenticate], resumes.update);
 
+  // Get all educations for a resume
+  router.get("/:id/educations", [authenticate], resumes.getEducations);
+  // Add multiple educations to a resume
+  router.post("/:id/educations", [authenticate], resumes.addEducations);
+  
+  // Get all experiences for a resume
+  router.get("/:id/experiences", [authenticate], resumes.getExperiences);
+
+  // Get all skills for a resume
+  router.get("/:id/skills", [authenticate], resumes.getSkills);
+
   // Delete a Resume with id
   router.delete("/:id", [authenticate], resumes.delete);
 
