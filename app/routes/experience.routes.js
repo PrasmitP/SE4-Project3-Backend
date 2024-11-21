@@ -18,6 +18,9 @@ module.exports = (app) => {
     // Update an Experience with id
     router.put("/:id", [authenticate], experiences.update);
 
+    // Update relation for Experience
+    router.put("/updateRelation/:id", [authenticate], experiences.updateRelation);
+
     // Delete an Experience with id
     router.delete("/:id", [authenticate], experiences.delete);
 
