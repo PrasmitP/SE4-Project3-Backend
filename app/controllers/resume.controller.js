@@ -94,7 +94,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
   Resume.update(req.body, {
-    where: { id: id },
+    where: { resumeId: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -136,6 +136,22 @@ exports.getEducations = (req, res) => {
       });
     });
 }
+
+// Add Educations to a resume
+exports.addEducations = async (req, res) => {
+  const resumeId = req.params.id;
+  console.log("Adding education to resume with id: " + resumeId);
+  try {
+    const resumeInstance = await Resume.findByPk(resumeId);
+    const educationIds = req.body.educationId
+    await resumeInstance.addEducation(educationIds);
+    res.send({ message: "Educations added successfully." });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Error adding education to resume with id=" + resumeId,
+    });
+  }
+};
 
 // Get all experiences for a resume
 exports.getExperiences = (req, res) => {
