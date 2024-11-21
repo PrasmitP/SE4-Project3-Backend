@@ -29,6 +29,9 @@ module.exports = (app) => {
   // Get all skills for a resume
   router.get("/:id/skills", [authenticate], resumes.getSkills);
 
+  // Get all awards for a resume
+  router.get("/:id/awards", [authenticate], resumes.getAwards);
+  
   // Delete a Resume with id
   router.delete("/:id", [authenticate], resumes.delete);
 

@@ -22,6 +22,7 @@ db.experience = require("./experience.model.js")(sequelize, Sequelize);
 db.education = require("./education.model.js")(sequelize, Sequelize);
 db.project = require("./project.model.js")(sequelize, Sequelize);
 db.comment = require("./comment.model.js")(sequelize, Sequelize);
+db.award = require("./award.model.js")(sequelize, Sequelize);
 
 // foreign key for session
 db.user.hasMany(
@@ -95,6 +96,18 @@ db.project.belongsTo(
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
+// foreign key for awards/certifications/honors
+db.user.hasMany(
+  db.award,
+  { as: "award" },
+  { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
+);
+db.award.belongsTo(
+  db.user,
+  { as: "user" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+
 // foreign key for comment
 db.resume.hasMany(
   db.comment,
@@ -124,4 +137,8 @@ db.resume.belongsToMany(db.skill, { through: "ResumeSkill" });
 
 db.project.belongsToMany(db.resume, { through: "ResumeProject" });
 db.resume.belongsToMany(db.project, { through: "ResumeProject" });
+
+db.award.belongsToMany(db.resume, { through: "ResumeAward" });
+db.resume.belongsToMany(db.award, { through: "ResumeAward" });
+
 module.exports = db;
