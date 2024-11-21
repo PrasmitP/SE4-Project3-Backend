@@ -21,6 +21,7 @@ db.skill = require("./skill.model.js")(sequelize, Sequelize);
 db.experience = require("./experience.model.js")(sequelize, Sequelize);
 db.education = require("./education.model.js")(sequelize, Sequelize);
 db.project = require("./project.model.js")(sequelize, Sequelize);
+db.comment = require("./comment.model.js")(sequelize, Sequelize);
 
 // foreign key for session
 db.user.hasMany(
@@ -91,6 +92,18 @@ db.user.hasMany(
 db.project.belongsTo(
   db.user,
   { as: "user" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+
+// foreign key for comment
+db.resume.hasMany(
+  db.comment,
+  { as: "comment" },
+  { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
+);
+db.comment.belongsTo(
+  db.resume,
+  { as: "resume" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
