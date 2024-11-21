@@ -65,15 +65,19 @@ exports.login = async (req, res) => {
     },
   })
     .then((data) => {
+      console.log("logging data")
+      console.log(data)
       if (data != null) {
         user = data.dataValues;
       } else {
         // create a new User and save to database
+        console.log("at this point, we couldnt find a user in the database, so we will create one")
         user = {
           fName: firstName,
           lName: lastName,
           email: email,
         };
+        console.log(user)
       }
     })
     .catch((err) => {
