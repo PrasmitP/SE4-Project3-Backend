@@ -15,6 +15,7 @@ exports.create = async (req, res) => {
     companyName: req.body.companyName,
     city: req.body.city,
     state: req.body.state,
+    accomplishment: req.body.accomplishment,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     jobRole: req.body.jobRole,

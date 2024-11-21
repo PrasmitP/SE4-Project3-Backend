@@ -14,6 +14,9 @@ module.exports = (sequelize, Sequelize) => {
       state: {
         type: Sequelize.STRING,
       },
+      accomplishment: {
+        type: Sequelize.STRING,
+      },
       startDate: {
         type: Sequelize.STRING,
       },
