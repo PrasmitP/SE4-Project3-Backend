@@ -155,7 +155,7 @@ exports.addEducations = async (req, res) => {
 
 // Get all experiences for a resume
 exports.getExperiences = (req, res) => {
-  console.log("Finding all educations for resume with id: " + req.params.id);
+  console.log("Finding all experiences for resume with id: " + req.params.id);
   const id = req.params.id;
   Resume.findByPk(id, { include: ["experiences"] })
     .then((data) => {
@@ -175,6 +175,22 @@ exports.getExperiences = (req, res) => {
       });
     });
 }
+
+// Add Experiences to a resume
+exports.addExperiences = async (req, res) => {
+  const resumeId = req.params.id;
+  console.log("Adding experience to resume with id: " + resumeId);
+  try {
+    const resumeInstance = await Resume.findByPk(resumeId);
+    const experienceIds = req.body.experienceId
+    await resumeInstance.addExperience(experienceIds);
+    res.send({ message: "Experiences added successfully." });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Error adding experience to resume with id=" + resumeId,
+    });
+  }
+};
 
 // Get all skills for a resume
 exports.getSkills = (req, res) => {
@@ -199,6 +215,62 @@ exports.getSkills = (req, res) => {
     });
 }
 
+// Add Skills to a resume
+exports.addSkills = async (req, res) => {
+  const resumeId = req.params.id;
+  console.log("Adding skill to resume with id: " + resumeId);
+  try {
+    const resumeInstance = await Resume.findByPk(resumeId);
+    const skillIds = req.body.skillId
+    await resumeInstance.addSkill(skillIds);
+    res.send({ message: "Skill added successfully." });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Error adding skill to resume with id=" + resumeId,
+    });
+  }
+};
+
+// Get all projects for a resume
+exports.getProjects = (req, res) => {
+  console.log("Finding all projects for resume with id: " + req.params.id);
+  const id = req.params.id;
+  Resume.findByPk(id, { include: ["projects"] })
+    .then((data) => {
+      if (data) {
+        res.send(data.projects);
+      } else {
+        res.status(404).send({
+          message: `Cannot find Projects for Resume with id=${id}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Error retrieving Projects for Resume with id=" + id,
+      });
+    });
+}
+
+// Add Projects to a resume
+exports.addProjects = async (req, res) => {
+  const resumeId = req.params.id;
+  console.log("Adding project to resume with id: " + resumeId);
+  try {
+    const resumeInstance = await Resume.findByPk(resumeId);
+    const projectIds = req.body.projectId
+    await resumeInstance.addProject(projectIds);
+    res.send({ message: "Project added successfully." });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Error adding project to resume with id=" + resumeId,
+    });
+  }
+};
+
+
 // Get all awards for a resume
 exports.getAwards = (req, res) => {
   console.log("Finding all awards for resume with id: " + req.params.id);
@@ -221,6 +293,23 @@ exports.getAwards = (req, res) => {
       });
     });
 }
+
+// Add Awards to a resume
+exports.addAwards = async (req, res) => {
+  const resumeId = req.params.id;
+  console.log("Adding award to resume with id: " + resumeId);
+  try {
+    const resumeInstance = await Resume.findByPk(resumeId);
+    const awardIds = req.body.awardId
+    await resumeInstance.addAward(awardIds);
+    res.send({ message: "Award added successfully." });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Error adding award to resume with id=" + resumeId,
+    });
+  }
+};
+
 
 // Delete a Resume with the specified id in the request
 exports.delete = (req, res) => {

@@ -36,7 +36,23 @@ exports.create = async (req, res) => {
   }
 };
 
-// Find all Award for user id 
+// Retrieve all awards from the database.
+exports.findAll = (req, res) => {
+  const awardName = req.query.awardName;
+  var condition = awardName ? { title: { [Op.like]: `%${awardName}%` } } : null;
+  Award.findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving resumes.",
+      });
+    });
+};
+
+// Find an Award for a user with an id
 exports.findAllForUser = (req, res) => {
   console.log("Finding all award for user with id: " + req.params.userId);
   const userId = req.params.userId;
@@ -46,7 +62,7 @@ exports.findAllForUser = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find  for user with id=${userId}.`,
+          message: `Cannot find Award for user with id=${userId}.`,
         });
       }
     })
@@ -54,7 +70,7 @@ exports.findAllForUser = (req, res) => {
       res.status(500).send({
         message:
           err.message ||
-          "Error retrieving Resumes for user with id=" + userId,
+          "Error retrieving Awards for user with id=" + userId,
       });
     });
 };
@@ -107,6 +123,7 @@ exports.update = (req, res) => {
     });
 };
 
+//Update relation for award
 exports.updateRelation = async (req, res) => {
   const awardId = req.params.awardId;
   console.log("Updating relationship of award with id: " + awardId);
@@ -154,7 +171,7 @@ exports.updateRelation = async (req, res) => {
   }
 };
 
-// Delete a Resume with the specified id in the request
+// Delete an Award with the specified id in the request
 exports.delete = (req, res) => {
   const awardId = req.params.awardId;
   Award.destroy({

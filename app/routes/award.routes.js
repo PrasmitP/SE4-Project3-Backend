@@ -10,16 +10,16 @@ module.exports = (app) => {
     router.get("/userAwards/:userId", [authenticate], awards.findAllForUser);
 
     // Retrieve a single Award with id
-    router.get("/:awardId", [authenticate], awards.findOne);
+    router.get("/:id", [authenticate], awards.findOne);
 
     // Update an Award with id
-    router.put("/:awardId", [authenticate], awards.update);
+    router.put("/:id", [authenticate], awards.update);
 
     // Update relation for Award
-    router.put("/updateRelation/:awardId", [authenticate], awards.updateRelation);
+    router.put("/updateRelation/:id", [authenticate], awards.updateRelation);
 
     // Delete an Award with id
-    router.delete("/:awardId", [authenticate], awards.delete);
+    router.delete("/:id", [authenticate], awards.delete);
 
     app.use("/awards", router);
 };

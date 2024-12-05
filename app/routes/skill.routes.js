@@ -18,7 +18,7 @@ module.exports = (app) => {
     // Update an Skill with id
     router.put("/:id", [authenticate], skills.update);
 
-    // Update relation for Education
+    // Update relation for Skill
     router.put("/updateRelation/:id", [authenticate], skills.updateRelation);
 
     // Delete an Skill with id

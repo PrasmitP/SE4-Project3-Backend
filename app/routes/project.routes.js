@@ -18,6 +18,9 @@ module.exports = (app) => {
     // Update an Project with id
     router.put("/:id", [authenticate], projects.update);
 
+    // Update relation for Project
+    router.put("/updateRelation/:id", [authenticate], projects.updateRelation);
+
     // Delete an Project with id
     router.delete("/:id", [authenticate], projects.delete);
 
