@@ -97,6 +97,32 @@ exports.findByEmail = (req, res) => {
     });
 };
 
+// Find a single User with an First Name + " " + Last Name
+exports.findByName = (req, res) => {
+  const name = req.body.name;
+  const fName = name.split(" ")[0];
+  const lName = name.split(" ")[1];
+  console.log(`------------------------getting user with name: ${fName} + ${lName}`);
+  User.findOne({
+    where: {
+      fName: fName,
+      lName: lName
+    },
+  })
+    .then((data) => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.send(`${name} not found`);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving User with name=" + name,
+      });
+    });
+};
+
 // Update a User by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
