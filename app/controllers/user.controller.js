@@ -99,7 +99,10 @@ exports.findByEmail = (req, res) => {
 
 // Find a single User with an First Name + " " + Last Name
 exports.findByName = (req, res) => {
-  const name = req.body.name;
+  const name = req.params.name;
+  if (!name) {
+      return res.status(400).send("Name parameter is required.");
+  }
   const fName = name.split(" ")[0];
   const lName = name.split(" ")[1];
   console.log(`------------------------getting user with name: ${fName} + ${lName}`);
