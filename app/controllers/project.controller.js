@@ -100,6 +100,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
   console.log("Updating project with id: " + id);
+  
   Project.update(req.body, {
     where: { projectId: id },
   })

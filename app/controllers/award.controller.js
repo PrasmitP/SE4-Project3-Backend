@@ -38,8 +38,8 @@ exports.create = async (req, res) => {
 
 // Retrieve all awards from the database.
 exports.findAll = (req, res) => {
-  const awardName = req.query.awardName;
-  var condition = awardName ? { title: { [Op.like]: `%${awardName}%` } } : null;
+  const awardTitle = req.query.title;
+  var condition = awardTitle ? { title: { [Op.like]: `%${awardTitle}%` } } : null;
   Award.findAll({ where: condition })
     .then((data) => {
       res.send(data);
@@ -79,31 +79,31 @@ exports.findAllForUser = (req, res) => {
 exports.findOne = (req, res) => {
   console.log("Finding award with id: " + req.params.awardId);
 
-  const awardId = req.params.awardId;
-  Award.findByPk(awardId)
+  const id = req.params.id;
+  Award.findByPk(id)
     .then((data) => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Award with id=${awardId}.`,
+          message: `Cannot find Award with id=${id}.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error retrieving Award with id=" + awardId,
+        message: err.message || "Error retrieving Award with id=" + id,
       });
     });
 };
 
 // Update an Award by the id in the request
 exports.update = (req, res) => {
-  const awardId = req.params.awardId;
-  console.log("Updating award with id: " + awardId);
+  const id = req.params.id;
+  console.log("Updating award with id: " + id);
 
   Award.update(req.body, {
-    where: { awardId: awardId },
+    where: { awardId: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -112,29 +112,29 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot update Award with id=${awardId}. Maybe Resume was not found or req.body is empty!`,
+          message: `Cannot update Award with id=${id}. Maybe Resume was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error updating Resume with id=" + awardId,
+        message: err.message || "Error updating Resume with id=" + id,
       });
     });
 };
 
 //Update relation for award
 exports.updateRelation = async (req, res) => {
-  const awardId = req.params.awardId;
-  console.log("Updating relationship of award with id: " + awardId);
+  const id = req.params.id;
+  console.log("Updating relationship of award with id: " + id);
 
   try {
     // Find the Award instance by primary key
-    const awardInstance = await Award.findByPk(awardId);
+    const awardInstance = await Award.findByPk(id);
 
     if (!awardInstance) {
       res.status(404).send({
-        message: `Award with id=${awardId} not found.`,
+        message: `Award with id=${id} not found.`,
       });
       return;
     }
@@ -143,7 +143,7 @@ exports.updateRelation = async (req, res) => {
     if (req.body.removeResumeId) {
       await awardInstance.removeResume(req.body.removeResumeId);
       res.send({
-        message: `Successfully removed Resume with id=${req.body.removeResumeId} from Award with id=${awardId}.`,
+        message: `Successfully removed Resume with id=${req.body.removeResumeId} from Award with id=${id}.`,
       });
       return;
     }
@@ -152,7 +152,7 @@ exports.updateRelation = async (req, res) => {
     if (req.body.addResumeId) {
       await awardInstance.addResume(req.body.addResumeId);
       res.send({
-        message: `Successfully added Resume with id=${req.body.addResumeId} to Award with id=${awardId}.`,
+        message: `Successfully added Resume with id=${req.body.addResumeId} to Award with id=${id}.`,
       });
       return;
     }
@@ -166,16 +166,16 @@ exports.updateRelation = async (req, res) => {
     // Handle errors
     res.status(500).send({
       message:
-        err.message || `Some error occurred while updating the relationship for Award with id=${awardId}.`,
+        err.message || `Some error occurred while updating the relationship for Award with id=${id}.`,
     });
   }
 };
 
 // Delete an Award with the specified id in the request
 exports.delete = (req, res) => {
-  const awardId = req.params.awardId;
+  const id = req.params.id;
   Award.destroy({
-    where: { awardId: awardId },
+    where: { awardId: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -184,13 +184,13 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot delete Award with id=${awardId}. Maybe Resume was not found!`,
+          message: `Cannot delete Award with id=${id}. Maybe Resume was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Could not delete Resume with id=" + awardId,
+        message: err.message || "Could not delete Resume with id=" + id,
       });
     });
 };
